@@ -1,0 +1,392 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		08103369334FAE6F2A170F30 /* ActiveSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DC3DC6C99D92D6D92DABE0 /* ActiveSessionView.swift */; };
+		18A94DA941B938E466F04F74 /* MenuBarTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09976003E5B94551A8FCA8DB /* MenuBarTimerApp.swift */; };
+		2189EB1212B4088E15AAB073 /* TimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD867DBB37533E9132EDCF9 /* TimeEntry.swift */; };
+		290A5FA11441AFD2F228B8B9 /* NotionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A552AAE13C5B9C9D040B1897 /* NotionService.swift */; };
+		2A95A5885E876E9C656B8FB0 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A19BDC068A911E2E10CC206 /* StorageService.swift */; };
+		40872A0DEDA6F1E8446483B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C019B1DADF7014A50219B3F3 /* Assets.xcassets */; };
+		63E9BEA0A85CFB514076596F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC0516F435AD012F44E2DAE /* SettingsView.swift */; };
+		77137C0B6DC6B4B4376DAE20 /* NewSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFA8027507770AE3D47E900 /* NewSessionView.swift */; };
+		8D0F1DC36207D7252613B617 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DB6D3C35D2B0613FFCE75 /* TimerManager.swift */; };
+		9291D8960488E33EEF4923CE /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F28F040941E3DC570C420 /* CircularProgressView.swift */; };
+		C13C2B6A05C44278E0026940 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8B0F1805EB7E4084DB68F /* ContentView.swift */; };
+		E0B75F58FBB5384C587C6B83 /* SessionHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B187D7435B90C5BB7F5A90C8 /* SessionHistoryView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		09976003E5B94551A8FCA8DB /* MenuBarTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarTimerApp.swift; sourceTree = "<group>"; };
+		0A19BDC068A911E2E10CC206 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		0AB8B0F1805EB7E4084DB68F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		14DC3DC6C99D92D6D92DABE0 /* ActiveSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionView.swift; sourceTree = "<group>"; };
+		1CD867DBB37533E9132EDCF9 /* TimeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntry.swift; sourceTree = "<group>"; };
+		653CBAD6E1549DF69F346A94 /* MenuBarTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MenuBarTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E9DB6D3C35D2B0613FFCE75 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		9EC0516F435AD012F44E2DAE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A552AAE13C5B9C9D040B1897 /* NotionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotionService.swift; sourceTree = "<group>"; };
+		B187D7435B90C5BB7F5A90C8 /* SessionHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHistoryView.swift; sourceTree = "<group>"; };
+		B53F28F040941E3DC570C420 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
+		C019B1DADF7014A50219B3F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FFFA8027507770AE3D47E900 /* NewSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		176AE3326C115BD85D57FF28 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1CD867DBB37533E9132EDCF9 /* TimeEntry.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2247847B5E5C329A4FBCE8B5 = {
+			isa = PBXGroup;
+			children = (
+				38619F7EF233B25B5E203ACE /* MenuBarTimer */,
+				5315F5AD556F1687F12ABA26 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2E1094C8AAA3871CCD4DD1FF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A552AAE13C5B9C9D040B1897 /* NotionService.swift */,
+				0A19BDC068A911E2E10CC206 /* StorageService.swift */,
+				7E9DB6D3C35D2B0613FFCE75 /* TimerManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		38619F7EF233B25B5E203ACE /* MenuBarTimer */ = {
+			isa = PBXGroup;
+			children = (
+				505C53A46545D097A0CF5192 /* App */,
+				176AE3326C115BD85D57FF28 /* Models */,
+				3D0EDF544B2BE70D36D8D43E /* Resources */,
+				2E1094C8AAA3871CCD4DD1FF /* Services */,
+				446FEDB4EDDD817FBCA26700 /* Views */,
+			);
+			path = MenuBarTimer;
+			sourceTree = "<group>";
+		};
+		3D0EDF544B2BE70D36D8D43E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C019B1DADF7014A50219B3F3 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		446FEDB4EDDD817FBCA26700 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				14DC3DC6C99D92D6D92DABE0 /* ActiveSessionView.swift */,
+				B53F28F040941E3DC570C420 /* CircularProgressView.swift */,
+				0AB8B0F1805EB7E4084DB68F /* ContentView.swift */,
+				FFFA8027507770AE3D47E900 /* NewSessionView.swift */,
+				B187D7435B90C5BB7F5A90C8 /* SessionHistoryView.swift */,
+				9EC0516F435AD012F44E2DAE /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		505C53A46545D097A0CF5192 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				09976003E5B94551A8FCA8DB /* MenuBarTimerApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		5315F5AD556F1687F12ABA26 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				653CBAD6E1549DF69F346A94 /* MenuBarTimer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		377B7FE732C9346ADF7232A1 /* MenuBarTimer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4641B87FC22D77ECEEF5BAC5 /* Build configuration list for PBXNativeTarget "MenuBarTimer" */;
+			buildPhases = (
+				C150F2E7BB5705380F7694CA /* Sources */,
+				AD0B4B1265139E76866159D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MenuBarTimer;
+			packageProductDependencies = (
+			);
+			productName = MenuBarTimer;
+			productReference = 653CBAD6E1549DF69F346A94 /* MenuBarTimer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3C6371CCA510377D65DA3E75 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					377B7FE732C9346ADF7232A1 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 655CEABA389DC5C2CA5A80DC /* Build configuration list for PBXProject "MenuBarTimer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 2247847B5E5C329A4FBCE8B5;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 5315F5AD556F1687F12ABA26 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				377B7FE732C9346ADF7232A1 /* MenuBarTimer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AD0B4B1265139E76866159D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40872A0DEDA6F1E8446483B3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C150F2E7BB5705380F7694CA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08103369334FAE6F2A170F30 /* ActiveSessionView.swift in Sources */,
+				9291D8960488E33EEF4923CE /* CircularProgressView.swift in Sources */,
+				C13C2B6A05C44278E0026940 /* ContentView.swift in Sources */,
+				18A94DA941B938E466F04F74 /* MenuBarTimerApp.swift in Sources */,
+				77137C0B6DC6B4B4376DAE20 /* NewSessionView.swift in Sources */,
+				290A5FA11441AFD2F228B8B9 /* NotionService.swift in Sources */,
+				E0B75F58FBB5384C587C6B83 /* SessionHistoryView.swift in Sources */,
+				63E9BEA0A85CFB514076596F /* SettingsView.swift in Sources */,
+				2A95A5885E876E9C656B8FB0 /* StorageService.swift in Sources */,
+				2189EB1212B4088E15AAB073 /* TimeEntry.swift in Sources */,
+				8D0F1DC36207D7252613B617 /* TimerManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		252A52B47D8F34C9E7DABEDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MenuBarTimer/MenuBarTimer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = MenuBarTimer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.menubar.timer;
+				PRODUCT_NAME = "Menu Bar Timer";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		59AC827BD3BF928122AE8D88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		68B22ABE9F36334BEAE96BB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9D7313887DB8EF6392AD8AC5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MenuBarTimer/MenuBarTimer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = MenuBarTimer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.menubar.timer;
+				PRODUCT_NAME = "Menu Bar Timer";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4641B87FC22D77ECEEF5BAC5 /* Build configuration list for PBXNativeTarget "MenuBarTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				252A52B47D8F34C9E7DABEDE /* Debug */,
+				9D7313887DB8EF6392AD8AC5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		655CEABA389DC5C2CA5A80DC /* Build configuration list for PBXProject "MenuBarTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68B22ABE9F36334BEAE96BB1 /* Debug */,
+				59AC827BD3BF928122AE8D88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3C6371CCA510377D65DA3E75 /* Project object */;
+}
