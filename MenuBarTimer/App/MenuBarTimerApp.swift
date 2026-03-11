@@ -31,13 +31,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             .environmentObject(timerManager)
 
         popover = NSPopover()
-        popover.contentSize = NSSize(width: 320, height: 420)
+        popover.contentSize = NSSize(width: 320, height: 480)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: contentView)
 
         timerManager.onTick = { [weak self] progress, text in
             DispatchQueue.main.async {
                 self?.updateIcon(progress: progress, text: text)
+            }
+        }
+
+        timerManager.onFocusNudge = { [weak self] in
+            DispatchQueue.main.async {
+                self?.showNudge()
             }
         }
 
@@ -65,6 +71,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    private func showNudge() {
+        guard let button = statusItem.button, !popover.isShown else { return }
+        popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
     // MARK: - Menu Bar Icon
 
     private func updateIcon(progress: Double, text: String?) {
@@ -83,28 +95,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let image = NSImage(size: size, flipped: false) { rect in
             guard let ctx = NSGraphicsContext.current?.cgContext else { return false }
             let center = CGPoint(x: rect.midX, y: rect.midY)
-            let radius: CGFloat = 7
 
-            // Simple circle
+            // Outer ring
             ctx.setStrokeColor(NSColor.labelColor.cgColor)
             ctx.setLineWidth(1.5)
-            ctx.addArc(center: center, radius: radius, startAngle: 0, endAngle: 2 * .pi, clockwise: false)
+            ctx.addArc(center: center, radius: 7.5, startAngle: 0, endAngle: 2 * .pi, clockwise: false)
             ctx.strokePath()
 
-            // Clock hands: hour hand + minute hand
-            ctx.setLineCap(.round)
-
-            // Minute hand (pointing to 12 / up)
-            ctx.setLineWidth(1.5)
-            ctx.move(to: center)
-            ctx.addLine(to: CGPoint(x: center.x, y: center.y + 5))
+            // Inner ring
+            ctx.setLineWidth(1.2)
+            ctx.addArc(center: center, radius: 4, startAngle: 0, endAngle: 2 * .pi, clockwise: false)
             ctx.strokePath()
 
-            // Hour hand (pointing to 3 / right)
-            ctx.setLineWidth(1.5)
-            ctx.move(to: center)
-            ctx.addLine(to: CGPoint(x: center.x + 3.5, y: center.y))
-            ctx.strokePath()
+            // Center dot
+            ctx.setFillColor(NSColor.labelColor.cgColor)
+            ctx.addArc(center: center, radius: 1.5, startAngle: 0, endAngle: 2 * .pi, clockwise: false)
+            ctx.fillPath()
 
             return true
         }
@@ -117,20 +123,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let image = NSImage(size: size, flipped: false) { rect in
             guard let ctx = NSGraphicsContext.current?.cgContext else { return false }
             let center = CGPoint(x: rect.midX, y: rect.midY)
-            let radius: CGFloat = 7
+            let radius: CGFloat = 7.5
 
-            ctx.setStrokeColor(NSColor.tertiaryLabelColor.cgColor)
-            ctx.setLineWidth(2.5)
+            // Background circle (subtle track)
+            ctx.setFillColor(NSColor.tertiaryLabelColor.withAlphaComponent(0.2).cgColor)
             ctx.addArc(center: center, radius: radius, startAngle: 0, endAngle: 2 * .pi, clockwise: false)
-            ctx.strokePath()
+            ctx.fillPath()
 
             if progress > 0.001 {
-                ctx.setStrokeColor(NSColor.controlAccentColor.cgColor)
-                ctx.setLineWidth(2.5)
-                ctx.setLineCap(.round)
+                // Filled pie/wedge — teal color for visibility
+                let teal = NSColor(red: 0.2, green: 0.75, blue: 0.7, alpha: 1.0)
+                ctx.setFillColor(teal.cgColor)
                 let startAngle = CGFloat.pi / 2
                 let sweep = CGFloat(min(max(progress, 0), 1)) * 2 * .pi
                 let endAngle = startAngle - sweep
+                ctx.move(to: center)
                 ctx.addArc(
                     center: center,
                     radius: radius,
@@ -138,7 +145,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     endAngle: endAngle,
                     clockwise: true
                 )
-                ctx.strokePath()
+                ctx.closePath()
+                ctx.fillPath()
             }
 
             return true

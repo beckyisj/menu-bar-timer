@@ -2,10 +2,11 @@ import SwiftUI
 
 struct NewSessionView: View {
     @EnvironmentObject var timerManager: TimerManager
-    @State private var client = ""
-    @State private var task = ""
-    @State private var selectedDuration: Int = 30
-    @State private var customDuration: String = ""
+    @Binding var client: String
+    @Binding var task: String
+    @Binding var focusApp: String
+    @Binding var selectedDuration: Int
+    @Binding var customDuration: String
 
     private let presetDurations = [15, 30, 45, 60, 0] // 0 = open-ended
     private let storage = StorageService.shared
@@ -44,6 +45,7 @@ struct NewSessionView: View {
             VStack(alignment: .leading, spacing: 14) {
                 clientField
                 taskField
+                focusAppField
                 durationPicker
             }
             .padding(.horizontal, 16)
@@ -58,29 +60,66 @@ struct NewSessionView: View {
 
     // MARK: - Subviews
 
+    private var clientSuggestions: [String] {
+        let trimmed = client.trimmingCharacters(in: .whitespaces).lowercased()
+        guard !trimmed.isEmpty else { return storage.recentClients }
+        return storage.recentClients.filter {
+            $0.lowercased().contains(trimmed) && $0.lowercased() != trimmed
+        }
+    }
+
     private var clientField: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Client")
                 .font(.caption)
                 .foregroundColor(.secondary)
 
-            HStack(spacing: 4) {
-                TextField("Client name", text: $client)
-                    .textFieldStyle(.roundedBorder)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 4) {
+                    TextField("Client name", text: $client)
+                        .textFieldStyle(.roundedBorder)
 
-                if !storage.recentClients.isEmpty {
-                    Menu {
-                        ForEach(storage.recentClients, id: \.self) { name in
-                            Button(name) { client = name }
+                    if !storage.recentClients.isEmpty {
+                        Menu {
+                            Menu("Remove…") {
+                                ForEach(storage.recentClients, id: \.self) { name in
+                                    Button("Remove \(name)", role: .destructive) {
+                                        storage.removeRecentClient(name)
+                                    }
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "xmark.circle")
+                                .font(.system(size: 11))
+                                .foregroundColor(.secondary)
+                                .frame(width: 20, height: 20)
                         }
-                    } label: {
-                        Image(systemName: "clock.arrow.circlepath")
-                            .font(.system(size: 12))
-                            .foregroundColor(.secondary)
-                            .frame(width: 24, height: 24)
+                        .menuStyle(.borderlessButton)
+                        .fixedSize()
                     }
-                    .menuStyle(.borderlessButton)
-                    .fixedSize()
+                }
+
+                if !clientSuggestions.isEmpty {
+                    HStack(spacing: 6) {
+                        ForEach(clientSuggestions.prefix(3), id: \.self) { name in
+                            Button {
+                                client = name
+                            } label: {
+                                Text(name)
+                                    .font(.caption)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 4)
+                                    .background(
+                                        Capsule()
+                                            .fill(Color.primary.opacity(0.08))
+                                    )
+                                    .foregroundColor(.primary)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.top, 4)
+                    .transition(.opacity)
                 }
             }
         }
@@ -92,6 +131,16 @@ struct NewSessionView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             TextField("What are you working on?", text: $task)
+                .textFieldStyle(.roundedBorder)
+        }
+    }
+
+    private var focusAppField: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Focus app (optional)")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            TextField("e.g. Notion, Cursor, Figma", text: $focusApp)
                 .textFieldStyle(.roundedBorder)
         }
     }
@@ -156,7 +205,8 @@ struct NewSessionView: View {
             timerManager.start(
                 client: client.trimmingCharacters(in: .whitespaces),
                 task: task.trimmingCharacters(in: .whitespaces),
-                duration: effectiveDuration
+                duration: effectiveDuration,
+                focusAppName: focusApp.trimmingCharacters(in: .whitespaces)
             )
         } label: {
             Text("Start Timer")

@@ -1,9 +1,11 @@
 import SwiftUI
+import ServiceManagement
 
 struct SettingsView: View {
     @State private var notionAPIKey = ""
     @State private var notionDatabaseID = ""
     @State private var soundEnabled = true
+    @State private var openAtLogin = SMAppService.mainApp.status == .enabled
     @State private var showSaved = false
 
     private let storage = StorageService.shared
@@ -71,6 +73,20 @@ struct SettingsView: View {
 
             Toggle("Play sound on completion", isOn: $soundEnabled)
                 .font(.callout)
+
+            Toggle("Open at login", isOn: $openAtLogin)
+                .font(.callout)
+                .onChange(of: openAtLogin) { newValue in
+                    do {
+                        if newValue {
+                            try SMAppService.mainApp.register()
+                        } else {
+                            try SMAppService.mainApp.unregister()
+                        }
+                    } catch {
+                        openAtLogin = !newValue
+                    }
+                }
         }
     }
 

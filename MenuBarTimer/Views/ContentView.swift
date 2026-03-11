@@ -10,6 +10,13 @@ struct ContentView: View {
     @EnvironmentObject var timerManager: TimerManager
     @State private var selectedTab: AppTab = .timer
 
+    // Persist new-session form state across tab switches
+    @State private var client = ""
+    @State private var task = ""
+    @State private var focusApp = ""
+    @State private var selectedDuration: Int = 30
+    @State private var customDuration: String = ""
+
     var body: some View {
         ZStack {
             // Subtle warm background gradient
@@ -30,7 +37,13 @@ struct ContentView: View {
                         if timerManager.isRunning {
                             ActiveSessionView()
                         } else {
-                            NewSessionView()
+                            NewSessionView(
+                                client: $client,
+                                task: $task,
+                                focusApp: $focusApp,
+                                selectedDuration: $selectedDuration,
+                                customDuration: $customDuration
+                            )
                         }
                     case .history:
                         SessionHistoryView()
@@ -53,7 +66,7 @@ struct ContentView: View {
                 .padding(.horizontal, 12)
             }
         }
-        .frame(width: 320, height: 420)
+        .frame(width: 320, height: 480)
     }
 
     private func tabButton(icon: String, label: String, tab: AppTab) -> some View {

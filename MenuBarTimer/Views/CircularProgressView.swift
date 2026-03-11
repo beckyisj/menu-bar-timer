@@ -9,16 +9,19 @@ struct CircularProgressView: View {
         min(max(progress, 0), 1)
     }
 
+    private let gradientColors: [Color] = [
+        Color(red: 0.2, green: 0.8, blue: 0.75),
+        Color(red: 0.35, green: 0.5, blue: 0.95),
+        Color(red: 0.55, green: 0.35, blue: 0.95)
+    ]
+
     private var gradient: AngularGradient {
-        AngularGradient(
-            gradient: Gradient(colors: [
-                Color(red: 0.2, green: 0.8, blue: 0.75),
-                Color(red: 0.35, green: 0.5, blue: 0.95),
-                Color(red: 0.55, green: 0.35, blue: 0.95)
-            ]),
+        let sweep = max(clampedProgress, 0.001) * 360
+        return AngularGradient(
+            gradient: Gradient(colors: gradientColors),
             center: .center,
-            startAngle: .degrees(-90),
-            endAngle: .degrees(270)
+            startAngle: .degrees(0),
+            endAngle: .degrees(sweep)
         )
     }
 

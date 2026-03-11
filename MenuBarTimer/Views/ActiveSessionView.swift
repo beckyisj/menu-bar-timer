@@ -47,6 +47,15 @@ struct ActiveSessionView: View {
                     .background(Capsule().fill(Color.orange.opacity(0.12)))
             }
 
+            if timerManager.isOffFocus && !timerManager.focusApp.isEmpty {
+                Text("Get back to \(timerManager.focusApp)!")
+                    .font(.caption.weight(.medium))
+                    .foregroundColor(.red)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 5)
+                    .background(Capsule().fill(Color.red.opacity(0.12)))
+            }
+
             Spacer()
 
             // Action buttons

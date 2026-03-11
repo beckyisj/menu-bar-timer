@@ -78,4 +78,10 @@ class StorageService {
     var recentClients: [String] {
         defaults.stringArray(forKey: recentClientsKey) ?? []
     }
+
+    func removeRecentClient(_ client: String) {
+        var clients = recentClients
+        clients.removeAll { $0.lowercased() == client.lowercased() }
+        defaults.set(clients, forKey: recentClientsKey)
+    }
 }

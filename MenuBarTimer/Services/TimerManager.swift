@@ -8,13 +8,21 @@ class TimerManager: ObservableObject {
     @Published var progress: Double = 0
     @Published var remainingSeconds: TimeInterval = 0
     @Published var currentEntry: TimeEntry?
+    @Published var focusApp: String = ""
+    @Published var isOffFocus = false
 
     var onTick: ((Double, String?) -> Void)?
+    var onFocusNudge: (() -> Void)?
 
     private var timer: AnyCancellable?
     private var startTime: Date?
     private var pausedElapsed: TimeInterval = 0
     private var plannedDuration: TimeInterval = 0
+    private var focusCheckTimer: AnyCancellable?
+    private var offFocusSince: Date?
+    private let offFocusThreshold: TimeInterval = 30 // seconds before nudge
+    private var lastNudgeTime: Date?
+    private let nudgeCooldown: TimeInterval = 30
 
     private let storage = StorageService.shared
     private let notionService = NotionService.shared
@@ -37,7 +45,7 @@ class TimerManager: ObservableObject {
         return String(format: "%d:%02d", mins, secs)
     }
 
-    func start(client: String, task: String, duration: TimeInterval) {
+    func start(client: String, task: String, duration: TimeInterval, focusAppName: String = "") {
         let entry = TimeEntry(
             id: UUID(),
             client: client,
@@ -57,8 +65,13 @@ class TimerManager: ObservableObject {
         isPaused = false
         startTime = Date()
         pausedElapsed = 0
+        focusApp = focusAppName
+        isOffFocus = false
+        offFocusSince = nil
+        lastNudgeTime = nil
 
         startTimer()
+        startFocusMonitor()
     }
 
     func pause() {
@@ -143,6 +156,11 @@ class TimerManager: ObservableObject {
         startTime = nil
         pausedElapsed = 0
         plannedDuration = 0
+        focusApp = ""
+        isOffFocus = false
+        offFocusSince = nil
+        lastNudgeTime = nil
+        stopFocusMonitor()
     }
 
     private func startTimer() {
@@ -177,5 +195,67 @@ class TimerManager: ObservableObject {
     private func calculateElapsed() -> TimeInterval {
         guard let start = startTime else { return pausedElapsed }
         return pausedElapsed + Date().timeIntervalSince(start)
+    }
+
+    // MARK: - Focus App Monitoring
+
+    private func startFocusMonitor() {
+        stopFocusMonitor()
+        let trimmed = focusApp.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else { return }
+
+        focusCheckTimer = Timer.publish(every: 5, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.checkFocusApp()
+            }
+    }
+
+    private func stopFocusMonitor() {
+        focusCheckTimer?.cancel()
+        focusCheckTimer = nil
+    }
+
+    private func checkFocusApp() {
+        guard isRunning, !isPaused else { return }
+        let targetName = focusApp.trimmingCharacters(in: .whitespaces).lowercased()
+        guard !targetName.isEmpty else { return }
+
+        let frontApp = NSWorkspace.shared.frontmostApplication
+        let appName = (frontApp?.localizedName ?? "").lowercased()
+        let bundleID = (frontApp?.bundleIdentifier ?? "").lowercased()
+
+        let isOnTarget = appName.contains(targetName) || bundleID.contains(targetName)
+
+        if isOnTarget {
+            // Back on track
+            if isOffFocus {
+                isOffFocus = false
+                offFocusSince = nil
+            }
+        } else {
+            // Off target
+            if offFocusSince == nil {
+                offFocusSince = Date()
+            }
+
+            if let since = offFocusSince,
+               Date().timeIntervalSince(since) >= offFocusThreshold {
+                isOffFocus = true
+
+                // Send a nudge notification (with cooldown)
+                if lastNudgeTime == nil || Date().timeIntervalSince(lastNudgeTime!) >= nudgeCooldown {
+                    sendFocusNudge()
+                    lastNudgeTime = Date()
+                }
+            }
+        }
+    }
+
+    private func sendFocusNudge() {
+        if storage.soundEnabled {
+            NSSound(named: "Tink")?.play()
+        }
+        onFocusNudge?()
     }
 }
