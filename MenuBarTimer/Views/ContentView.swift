@@ -66,7 +66,7 @@ struct ContentView: View {
                 .padding(.horizontal, 12)
             }
         }
-        .frame(width: 320, height: 480)
+        .frame(width: 320, height: 520)
     }
 
     private func tabButton(icon: String, label: String, tab: AppTab) -> some View {

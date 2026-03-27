@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             .environmentObject(timerManager)
 
         popover = NSPopover()
-        popover.contentSize = NSSize(width: 320, height: 480)
+        popover.contentSize = NSSize(width: 320, height: 520)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: contentView)
 
