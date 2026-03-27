@@ -137,10 +137,10 @@ struct NewSessionView: View {
 
     private var focusAppField: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Focus app (optional)")
+            Text("Focus apps (optional, comma-separated)")
                 .font(.caption)
                 .foregroundColor(.secondary)
-            TextField("e.g. Notion, Cursor, Figma", text: $focusApp)
+            TextField("e.g. Arc, Terminal", text: $focusApp)
                 .textFieldStyle(.roundedBorder)
         }
     }

@@ -218,14 +218,22 @@ class TimerManager: ObservableObject {
 
     private func checkFocusApp() {
         guard isRunning, !isPaused else { return }
-        let targetName = focusApp.trimmingCharacters(in: .whitespaces).lowercased()
-        guard !targetName.isEmpty else { return }
+        let trimmedFocus = focusApp.trimmingCharacters(in: .whitespaces)
+        guard !trimmedFocus.isEmpty else { return }
+
+        let targets = trimmedFocus
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
+            .filter { !$0.isEmpty }
+        guard !targets.isEmpty else { return }
 
         let frontApp = NSWorkspace.shared.frontmostApplication
         let appName = (frontApp?.localizedName ?? "").lowercased()
         let bundleID = (frontApp?.bundleIdentifier ?? "").lowercased()
 
-        let isOnTarget = appName.contains(targetName) || bundleID.contains(targetName)
+        let isOnTarget = targets.contains { target in
+            appName.contains(target) || bundleID.contains(target)
+        }
 
         if isOnTarget {
             // Back on track
