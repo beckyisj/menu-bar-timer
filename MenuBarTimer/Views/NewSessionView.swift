@@ -267,16 +267,50 @@ struct NewSessionView: View {
                 }
                 .buttonStyle(.plain)
 
-                DatePicker("", selection: $customStartedAt, displayedComponents: .hourAndMinute)
-                    .labelsHidden()
-                    .datePickerStyle(.compact)
-                    .frame(width: 110)
-                    .onChange(of: customStartedAt) { _, _ in
-                        startedMinutesAgo = -1
-                    }
+                hourMinuteFields
 
                 Spacer()
             }
+        }
+    }
+
+    private var hourMinuteFields: some View {
+        let cal = Calendar.current
+        let hour = Binding<Int>(
+            get: { cal.component(.hour, from: customStartedAt) },
+            set: { newHour in
+                var comps = cal.dateComponents([.year, .month, .day, .hour, .minute], from: customStartedAt)
+                comps.hour = max(0, min(23, newHour))
+                if let d = cal.date(from: comps) { customStartedAt = d }
+                startedMinutesAgo = -1
+            }
+        )
+        let minute = Binding<Int>(
+            get: { cal.component(.minute, from: customStartedAt) },
+            set: { newMin in
+                var comps = cal.dateComponents([.year, .month, .day, .hour, .minute], from: customStartedAt)
+                comps.minute = max(0, min(59, newMin))
+                if let d = cal.date(from: comps) { customStartedAt = d }
+                startedMinutesAgo = -1
+            }
+        )
+
+        return HStack(spacing: 4) {
+            TextField("", value: hour, formatter: NumberFormatter())
+                .textFieldStyle(.roundedBorder)
+                .frame(width: 40)
+                .multilineTextAlignment(.center)
+
+            Text(":").font(.system(.body, design: .rounded))
+
+            TextField("", value: minute, formatter: NumberFormatter())
+                .textFieldStyle(.roundedBorder)
+                .frame(width: 40)
+                .multilineTextAlignment(.center)
+
+            Text("(24h)")
+                .font(.caption2)
+                .foregroundColor(.secondary)
         }
     }
 
