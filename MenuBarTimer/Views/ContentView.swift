@@ -16,6 +16,8 @@ struct ContentView: View {
     @State private var focusApp = ""
     @State private var selectedDuration: Int = 30
     @State private var customDuration: String = ""
+    @State private var startedMinutesAgo: Int = 0
+    @State private var customStartedAt: Date = Date()
 
     var body: some View {
         ZStack {
@@ -42,7 +44,9 @@ struct ContentView: View {
                                 task: $task,
                                 focusApp: $focusApp,
                                 selectedDuration: $selectedDuration,
-                                customDuration: $customDuration
+                                customDuration: $customDuration,
+                                startedMinutesAgo: $startedMinutesAgo,
+                                customStartedAt: $customStartedAt
                             )
                         }
                     case .history:
@@ -66,7 +70,7 @@ struct ContentView: View {
                 .padding(.horizontal, 12)
             }
         }
-        .frame(width: 320, height: 520)
+        .frame(width: 320, height: 560)
     }
 
     private func tabButton(icon: String, label: String, tab: AppTab) -> some View {

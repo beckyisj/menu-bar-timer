@@ -7,8 +7,11 @@ struct NewSessionView: View {
     @Binding var focusApp: String
     @Binding var selectedDuration: Int
     @Binding var customDuration: String
+    @Binding var startedMinutesAgo: Int
+    @Binding var customStartedAt: Date
 
     private let presetDurations = [15, 30, 45, 60, 0] // 0 = open-ended
+    private let presetStartedAgo = [0, 5, 15, 30] // 0 = now
     private let storage = StorageService.shared
 
     private let accentGradient = LinearGradient(
@@ -32,6 +35,30 @@ struct NewSessionView: View {
         return TimeInterval(selectedDuration * 60)
     }
 
+    private var effectiveStartDate: Date {
+        if startedMinutesAgo == -1 {
+            // Time-of-day picker — interpret as today; if future, roll back a day.
+            let now = Date()
+            let cal = Calendar.current
+            let comps = cal.dateComponents([.hour, .minute], from: customStartedAt)
+            var todayComps = cal.dateComponents([.year, .month, .day], from: now)
+            todayComps.hour = comps.hour
+            todayComps.minute = comps.minute
+            todayComps.second = 0
+            let candidate = cal.date(from: todayComps) ?? now
+            return candidate > now ? candidate.addingTimeInterval(-86400) : candidate
+        }
+        return Date().addingTimeInterval(-TimeInterval(max(0, startedMinutesAgo) * 60))
+    }
+
+    private var effectiveStartedAgo: TimeInterval {
+        max(0, Date().timeIntervalSince(effectiveStartDate))
+    }
+
+    private var willLogCompleted: Bool {
+        !isOpenEnded && effectiveStartedAgo >= effectiveDuration && effectiveDuration > 0
+    }
+
     private var canStart: Bool {
         !client.trimmingCharacters(in: .whitespaces).isEmpty && (isOpenEnded || effectiveDuration > 0)
     }
@@ -47,6 +74,7 @@ struct NewSessionView: View {
                 taskField
                 focusAppField
                 durationPicker
+                startedAgoPicker
             }
             .padding(.horizontal, 16)
 
@@ -200,16 +228,69 @@ struct NewSessionView: View {
         }
     }
 
+    private var startedAgoPicker: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Started")
+                .font(.caption)
+                .foregroundColor(.secondary)
+
+            HStack(spacing: 6) {
+                ForEach(presetStartedAgo, id: \.self) { mins in
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.15)) {
+                            startedMinutesAgo = mins
+                        }
+                    } label: {
+                        Text(mins == 0 ? "Now" : "\(mins)m ago")
+                            .font(.system(.caption, design: .rounded).weight(.medium))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 6)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(startedMinutesAgo == mins
+                                        ? AnyShapeStyle(accentGradient)
+                                        : AnyShapeStyle(Color.primary.opacity(0.06)))
+                            )
+                            .foregroundColor(startedMinutesAgo == mins ? .white : .primary)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+
+            HStack(spacing: 6) {
+                Button {
+                    startedMinutesAgo = -1
+                } label: {
+                    Text("At:")
+                        .font(.caption)
+                        .foregroundColor(startedMinutesAgo == -1 ? .primary : .secondary)
+                }
+                .buttonStyle(.plain)
+
+                DatePicker("", selection: $customStartedAt, displayedComponents: .hourAndMinute)
+                    .labelsHidden()
+                    .datePickerStyle(.compact)
+                    .frame(width: 110)
+                    .onChange(of: customStartedAt) { _, _ in
+                        startedMinutesAgo = -1
+                    }
+
+                Spacer()
+            }
+        }
+    }
+
     private var startButton: some View {
         Button {
             timerManager.start(
                 client: client.trimmingCharacters(in: .whitespaces),
                 task: task.trimmingCharacters(in: .whitespaces),
                 duration: effectiveDuration,
-                focusAppName: focusApp.trimmingCharacters(in: .whitespaces)
+                focusAppName: focusApp.trimmingCharacters(in: .whitespaces),
+                startedAt: effectiveStartDate
             )
         } label: {
-            Text("Start Timer")
+            Text(willLogCompleted ? "Log Session" : "Start Timer")
                 .font(.system(.body, design: .rounded).weight(.semibold))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)

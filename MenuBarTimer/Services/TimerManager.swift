@@ -45,26 +45,50 @@ class TimerManager: ObservableObject {
         return String(format: "%d:%02d", mins, secs)
     }
 
-    func start(client: String, task: String, duration: TimeInterval, focusAppName: String = "") {
+    func start(client: String, task: String, duration: TimeInterval, focusAppName: String = "", startedAt: Date = Date()) {
+        let now = Date()
+        let backdated = max(0, now.timeIntervalSince(startedAt))
+
+        // If finite duration and the backdated start already exceeds it,
+        // log a completed session immediately instead of running the timer.
+        if duration > 0 && backdated >= duration {
+            let entry = TimeEntry(
+                id: UUID(),
+                client: client,
+                task: task,
+                plannedDuration: duration,
+                actualDuration: duration,
+                startedAt: startedAt,
+                completedAt: startedAt.addingTimeInterval(duration),
+                status: .completed
+            )
+            storage.addEntry(entry)
+            notionService.logEntry(entry)
+            if storage.soundEnabled {
+                NSSound(named: "Glass")?.play()
+            }
+            return
+        }
+
         let entry = TimeEntry(
             id: UUID(),
             client: client,
             task: task,
             plannedDuration: duration,
-            actualDuration: 0,
-            startedAt: Date(),
+            actualDuration: backdated,
+            startedAt: startedAt,
             completedAt: nil,
             status: .running
         )
 
         currentEntry = entry
         plannedDuration = duration
-        remainingSeconds = duration
-        progress = 0
+        remainingSeconds = duration > 0 ? max(0, duration - backdated) : 0
+        progress = duration > 0 ? min(1.0, backdated / duration) : 0
         isRunning = true
         isPaused = false
-        startTime = Date()
-        pausedElapsed = 0
+        startTime = now
+        pausedElapsed = backdated
         focusApp = focusAppName
         isOffFocus = false
         offFocusSince = nil
